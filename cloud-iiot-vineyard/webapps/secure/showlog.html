@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Show Log</title>
+    <link href="../vendor/bootstrap/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #000000;
+        }
+        
+        #log-div {
+            background-color: #000000;
+            color: #ffffff;
+            border-radius: 3px;
+            margin-top: 90px;
+        }
+        
+        .fixed-labels {
+            position: fixed;
+            width: 100%;
+            background-color: #ffffff;
+            top: 0px;
+        }
+    </style>
+
+</head>
+
+<body data-ng-app="ShowLog">
+    <div data-ng-controller="LogController">
+        <div id="log-div"></div>
+    </div>
+    <script src="../vendor/jquery/jquery-1.10.2.min.js"></script>
+    <script src="../vendor/bootstrap/bootstrap.min.js"></script>
+    <!-- Load Angular -->
+    <script src="../vendor/angular/angular.min.js"></script>
+    <script src="../vendor/angular/angular-sanitize.min.js"></script>
+    <script src="../vendor/angular/angular-route.js"></script>
+
+    <script src="../socket.io/socket.io.js"></script>
+
+
+    <script type="text/javascript">
+        var urlLocation = window.location.href;
+        urlLocation = urlLocation.split("/");
+        var authId = localStorage.getItem('token');
+        var socketUrlAddress = urlLocation[0] + "//" + urlLocation[2];
+        var app = angular.module('ShowLog', ['ngRoute', 'ngSanitize']);
+        app.controller('LogController', function($scope, $http, $interval, $timeout, loadTopLogs) {
+
+
+
+            $scope.loadLogs = function() {
+                    loadTopLogs.load().then(function(data) {
+                        var message = {};
+                        for (var i = data.data.messages.length - 1; i >= 0; i--) {
+                            message.header = JSON.parse(data.data.messages[i].header);
+                            message.payload = JSON.parse(data.data.messages[i].payload);
+                            message.checksum = JSON.parse(data.data.messages[i].checksum);
+                            message.messageId = data.data.messages[i].messageid;
+                            var test = JSON.stringify(message);
+                            $('<div class="add-div"><div>' + test + '</div><hr></hr></div>').appendTo('#log-div');
+                        }
+                        $scope.logs = data.data;
+                        console.log(data.data.messages);
+                        $(document).scrollTop($(document).height());
+                        var socket = io.connect(socketUrlAddress, function(data) {
+                            console.log("connection created");
+                        });
+                        socket.on('newMessage', function(result, err) {
+                            console.log(result);
+                            var test = JSON.stringify(result);
+                            $('<div class="add-div"><div>' + test + '</div><hr></hr></div>').appendTo('#log-div');
+                            $(document).scrollTop($(document).height());
+                        });
+                    });
+                }
+                //$scope.loadLogs();
+
+            var socket = io.connect(socketUrlAddress, function(data) {
+                console.log("connection created");
+            });
+
+            socket.on('iiot-rawmessage-screen', function(result, err) {
+                console.log(result);
+                var test = JSON.stringify(result);
+                $('<div class="add-div"><div>' + test + '</div><hr></hr></div>').appendTo('#log-div');
+                $(document).scrollTop($(document).height());
+            });
+        });
+        app.service('loadTopLogs', function($http) {
+            return {
+                load: function() {
+                    console.log();
+                    var req = {
+                        method: 'GET',
+                        url: socketUrlAddress + "/api/getStructuredMessages",
+                        headers: {
+                            'Authorization': 'JWT ' + authId
+                        },
+                        data: ''
+                    }
+                    if (authId) {
+                        return $http(req).then(function(response) {
+                            return response.data;
+                        });
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

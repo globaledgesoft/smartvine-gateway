@@ -1,0 +1,79 @@
+.main-div {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.middle-div {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner-div {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.highcharts-point {
+    fill: none;
+}
+
+.graph-div {
+    margin-top: 8%;
+}
+
+.image-info {
+    font-size: 50px;
+    color: #ffffff;
+    font-weight: 300;
+}
+
+.info-img-display {
+    display: inline-table;
+}
+
+
+/*body div{
+	display: none;
+}*/
+
+.control-label {
+    margin-top: 7px;
+}
+
+.lang-div {
+    margin-top: 5px;
+}
+
+.select-style {
+    border: 1px solid #ccc;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("../images/down-arrow.png") no-repeat 90% 50%;
+}
+
+select {
+    padding: 5px 8px;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.highcharts-plot-background {
+    fill: #F2F2F2;
+}
+
+label,
+select,
+.image-info,
+tspan,
+text {
+    font-family: 'Lato', sans-serif;
+}

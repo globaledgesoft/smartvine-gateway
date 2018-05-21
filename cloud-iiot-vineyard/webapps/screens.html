@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html data-ng-app="AWSMonitorApp">
+
+<head>
+    <title>AWS Monitor</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, minimal-ui" />
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/animate/animate.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+</head>
+
+<body data-ng-controller="monitorController">
+    <div class="main-div">
+        <div class="middle-div">
+            <div class="inner-div">
+                <div class="col-md-12 col-lg-12 lang-div" data-ng-show="langOpt">
+                    <div class="col-md-3 col-lg-3">
+                        <div class="col-md-6 col-lg-6">
+                            <label for="sel1" class="control-label">{{langLabel}}</label>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <select data-ng-model="currentLang" ng-options="lang.name for lang in availLangs" data-ng-change="changeLang()" class="form-control select-style"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-lg-9"></div>
+                </div>
+                <div data-ng-show="mainScreen">
+                    <div class="col-md-3 col-lg-3 graph-div">
+                        <div id="temp_graph"></div>
+                    </div>
+                    <div class="col-md-9 col-lg-9">
+                        <img src="images/new-factory-30x17.png" class="img-responsive" />
+                    </div>
+                </div>
+                <div data-ng-show="infoScreen" class="info-screen-display">
+                    <div class="col-md-12 col-lg-12">
+                        <div>
+                            <img src="{{currentImageUrl}}" class="img-responsive info-img-display" />
+                        </div>
+                        <div class="image-info">&nbsp; {{currentImageInfo}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- load Jquery -->
+    <script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
+    <!-- load Bootstrap -->
+    <script type="text/javascript" src="vendor/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Load Angular -->
+    <script src="vendor/angular/angular.min.js"></script>
+    <script src="vendor/angular/angular-sanitize.min.js"></script>
+    <script src="vendor/angular/angular-route.js"></script>
+
+    <!-- App -->
+    <script type="text/javascript" src="js/angular/app.js"></script>
+
+    <script type="text/javascript" src="js/lang/lang.js"></script>
+
+
+    <!-- Services -->
+    <script type="text/javascript" src="js/angular/services/tempGraph.js"></script>
+
+    <!-- Controllers -->
+    <script type="text/javascript" src="js/angular/controller/monitorController.js"></script>
+
+    <!-- load Highcharts -->
+    <script type="text/javascript" src="vendor/highcharts/highcharts.js"></script>
+
+    <!-- Socket Connection -->
+    <script src="../socket.io/socket.io.js"></script>
+
+    <!-- custom scripts -->
+    <!-- <script type="text/javascript" src="js/highcharts/area_chart.js"></script> -->
+    <!-- <script type="text/javascript" src="js/animation/load_animation.js"></script> -->
+</body>
+
+</html>
